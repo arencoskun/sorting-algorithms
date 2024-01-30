@@ -10,13 +10,14 @@ interface NumberPickerProps extends ScriptProps {
 
 export default function NumberPicker({
   children,
+  // setInp,
   ...props
 }: NumberPickerProps) {
   return (
-    <form className={`max-w-sm ${props.className}`}>
+    <form className={`${props.className} w-full flex flex-row justify-center`}>
       <input
         type="number"
-        className="border text-sm rounded-lg block w-2/3 p-2.5 bg-gray-100 border-gray-400 placeholder-gray-600 text-black focus:ring-blue-500 focus:border-blue-500"
+        className="border text-sm rounded-lg self-center p-2.5 bg-gray-100 border-gray-400 placeholder-gray-600 text-black focus:ring-blue-500 focus:border-blue-500"
         placeholder={props.placeholder}
         max={props.maxValue}
         min={props.minValue}
