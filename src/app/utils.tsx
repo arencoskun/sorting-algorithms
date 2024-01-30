@@ -1,5 +1,5 @@
 export function getRandomNumber(min: number, max: number): number {
-  return Math.random() * (max - min) + min;
+  return Math.floor(Math.random() * (max - min) + min);
 }
 
 export function fillDataArray(
@@ -12,24 +12,12 @@ export function fillDataArray(
   for (var i = 0; i < length; i++) {
     array.push(getRandomNumber(boundaryBottom, boundaryTop));
   }
-
   return array;
 }
 
-export function swap(array: Array<number>, index1: number, index2: number) {
-  console.log("swapping");
+export function swap(array: Array<number>, index1: number, index2: number): Array<number> {
   var newArr = [...array];
   [newArr[index1], newArr[index2]] = [newArr[index2], newArr[index1]];
-  return newArr;
-}
-
-export function selectionSort(data: Array<number>) {
-  var newArr = [...data];
-
-  for (var i = 0; i < newArr.length - 1; i++) {
-    newArr = selectionSortStep(newArr, i);
-  }
-
   return newArr;
 }
 
@@ -47,3 +35,8 @@ export function selectionSortStep(
   newArr = swap(newArr, minValue, i);
   return newArr;
 }
+
+
+// 34, 21, 56, 11, 89
+// 11, 21, 56, 34, 89
+// 11, 21, 34, 56, 89

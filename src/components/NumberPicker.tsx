@@ -1,17 +1,21 @@
 import { ScriptProps } from "next/script";
 
 interface NumberPickerProps extends ScriptProps {
-  handleChange: (newNumber: number, lowerThanMinimum?: boolean) => void;
+  handleChange?: (newNumber: number, lowerThanMinimum?: boolean) => void;
+  setInp: (e: number) => void;
   placeholder?: string;
   minValue?: number;
   maxValue?: number;
   defaultValue?: string;
+  inp?: number
 }
 
 export default function NumberPicker({
   children,
+  // setInp,
   ...props
 }: NumberPickerProps) {
+
   return (
     <form className={`max-w-sm ${props.className}`}>
       <input
@@ -21,18 +25,19 @@ export default function NumberPicker({
         max={props.maxValue}
         min={props.minValue}
         defaultValue={props.defaultValue}
-        onChange={(ev) => {
-          if (props.maxValue) {
-            if (ev.target.valueAsNumber > props.maxValue)
-              ev.target.valueAsNumber = props.maxValue;
-          }
-          props.handleChange(
-            ev.target.valueAsNumber,
-            props.minValue
-              ? ev.target.valueAsNumber < props.minValue
-              : undefined
-          );
-        }}
+        onChange={(e) => props.setInp(e.target.valueAsNumber)}
+        // onChange={(ev) => {
+        //   if (props.maxValue) {
+        //     if (ev.target.valueAsNumber > props.maxValue)
+        //       ev.target.valueAsNumber = props.maxValue;
+        //   }
+        //   props.handleChange(
+        //     ev.target.valueAsNumber,
+        //     props.minValue
+        //       ? ev.target.valueAsNumber < props.minValue
+        //       : undefined
+        //   );
+        // }}
         required
       ></input>
     </form>
