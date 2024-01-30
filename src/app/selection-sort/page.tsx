@@ -11,6 +11,7 @@ export default function Home() {
   const [data, setData] = useState<number[]>(fillDataArray(10));
   const [sortIndex, setSortIndex] = useState<number>(0);
   const [arrLength, setArrLength] = useState<number>(0);
+  const [started, setStarted] = useState<boolean>(false);
   const router = useRouter();
 
   const setDataArr = () => {
@@ -20,12 +21,14 @@ export default function Home() {
 
   const step = async () => {
     let tempData: number[] = data;
+    setStarted(true);
     for (let i = 0; i < tempData.length; i++) {
       tempData = selectionSortStep(tempData, i);
       setSortIndex(i);
       setData(tempData);
       await sleep(100);
     }
+    setStarted(false);
   };
 
   return (
@@ -38,14 +41,10 @@ export default function Home() {
         />
       </div>
       <div className="flex flex-row space-x-4">
-        <Button color="red" onClick={step} disabled={sortIndex > 0}>
+        <Button color="red" onClick={step} disabled={started}>
           Start
         </Button>
-        <Button
-          color="red"
-          onClick={setDataArr}
-          disabled={sortIndex > 0 && sortIndex < arrLength - 1}
-        >
+        <Button color="red" onClick={setDataArr} disabled={started}>
           Reset
         </Button>
         <Button color="yellow" onClick={() => router.back()}>
