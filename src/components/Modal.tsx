@@ -44,6 +44,7 @@ export default function Modal({ children, ...props }: ModalProps) {
               <div className="p-4 md:p-5 space-y-4">{children}</div>
               <div className="flex items-center p-4 md:p-5 border-t border-gray-600 rounded-b justify-end">
                 <Button
+                  color="blue"
                   onClick={() => {
                     props.setModalVisible(false);
                     if (props.onCloseButtonClicked)
