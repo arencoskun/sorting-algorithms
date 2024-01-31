@@ -29,19 +29,24 @@ export function swap(
   return newArr;
 }
 
-export function selectionSortStep(
-  data: Array<number>,
-  i: number
-): Array<number> {
+export function selectionSortStep(data: Array<number>, i: number): Array<any> {
   var newArr = [...data];
   var minValue;
   minValue = i;
+  var iterCount = 0;
+  var accessCount = 0;
+  var swapCount = 0;
   for (var j = i + 1; j < data.length; j++) {
-    if (newArr[j] < newArr[minValue]) minValue = j;
+    if (newArr[j] < newArr[minValue]) {
+      minValue = j;
+      swapCount++;
+    }
+    iterCount++;
+    accessCount += 2;
   }
-
   newArr = swap(newArr, minValue, i);
-  return newArr;
+  accessCount += 6;
+  return [newArr, iterCount, accessCount, swapCount];
 }
 
 export function bubbleSortStep(data: Array<number>, i: number): Array<any> {

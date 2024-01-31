@@ -12,27 +12,47 @@ export default function Home() {
   const [sortIndex, setSortIndex] = useState<number>(0);
   const [arrLength, setArrLength] = useState<number>(0);
   const [started, setStarted] = useState<boolean>(false);
+  const [iterCount, setIterCount] = useState<number>(0);
+  const [arrayAccessCount, setArrayAccessCount] = useState<number>(0);
+  const [swapCount, setSwapCount] = useState<number>(0);
   const router = useRouter();
 
   const setDataArr = () => {
     setData(fillDataArray(arrLength ? arrLength : 10));
     setSortIndex(0);
+    setIterCount(0);
+    setArrayAccessCount(0);
+    setSwapCount(0);
   };
 
   const step = async () => {
     let tempData: number[] = data;
+    let tempIterCount: number = 0;
+    let tempAccessCount: number = 0;
+    let tempSwapCount: number = 0;
     setStarted(true);
     for (let i = 0; i < tempData.length; i++) {
-      tempData = selectionSortStep(tempData, i);
+      var output = selectionSortStep(tempData, i);
+      tempData = output[0] as Array<number>;
+      var newIterCount = output[1] as number;
+      var newAccessCount = output[2] as number;
+      var newswapCount = output[3] as number;
+      tempIterCount += newIterCount + 1;
+      tempAccessCount += newAccessCount;
+      tempSwapCount += newswapCount;
+      console.log(newIterCount);
       setSortIndex(i);
+      setIterCount(tempIterCount);
+      setArrayAccessCount(tempAccessCount);
       setData(tempData);
+      setSwapCount(tempSwapCount);
       await sleep(100);
     }
     setStarted(false);
   };
 
   return (
-    <main className="flex h-screen flex-col items-center justify-center p-24 py-24 space-y-4">
+    <main className="flex h-screen flex-col items-center justify-center p-24 py-32 space-y-4">
       <Typography>Selection sort</Typography>
       <div className="flex flex-row justify-center">
         <NumberPicker
@@ -51,6 +71,10 @@ export default function Home() {
           Back
         </Button>
       </div>
+      <Typography>
+        {iterCount} iterations, {arrayAccessCount} array accesses, {swapCount}{" "}
+        swaps
+      </Typography>
       <VictoryBar
         name="bar"
         height={250}
