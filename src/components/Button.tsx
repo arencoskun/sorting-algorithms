@@ -18,6 +18,8 @@ export default function Button({ children, ...props }: ButtonProps) {
               ? "bg-green-300"
               : props.color === "yellow"
               ? "bg-yellow-300"
+              : props.color === "slate"
+              ? "bg-slate-300"
               : "bg-blue-300"
             : props.color === "red"
             ? "bg-red-500 hover:bg-red-700"
@@ -25,6 +27,8 @@ export default function Button({ children, ...props }: ButtonProps) {
             ? "bg-green-500 hover:bg-green-700"
             : props.color === "yellow"
             ? "bg-yellow-500 hover:bg-yellow-700"
+            : props.color === "slate"
+            ? "bg-slate-500 hover:bg-slate-700"
             : "bg-blue-500 hover:bg-blue-700"
         } text-white font-bold py-2 px-4 rounded ` + props.className
       }
