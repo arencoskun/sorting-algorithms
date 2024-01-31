@@ -15,6 +15,12 @@ export default function Home() {
       <Button color="green" onClick={() => router.push("bubble-sort/")}>
         Bubble sort
       </Button>
+      <Button color="yellow" onClick={() => router.push("insertion-sort/")}>
+        Insertion sort
+      </Button>
+      <Button color="blue" onClick={() => router.push("merge-sort/")}>
+        Merge sort
+      </Button>
     </main>
   );
 }

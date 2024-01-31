@@ -2,7 +2,7 @@
 import Typography from "@/components/Typography";
 import { useState } from "react";
 import { VictoryBar } from "victory";
-import { fillDataArray, selectionSortStep, sleep } from "../utils";
+import { fillDataArray, sleep, insertionSortStep } from "../utils";
 import Button from "@/components/Button";
 import NumberPicker from "@/components/NumberPicker";
 import { useRouter } from "next/navigation";
@@ -31,29 +31,27 @@ export default function Home() {
     let tempAccessCount: number = 0;
     let tempSwapCount: number = 0;
     setStarted(true);
-    for (let i = 0; i < tempData.length; i++) {
-      var output = selectionSortStep(tempData, i);
+    for (var i = 1; i < tempData.length; i++) {
+      var output = insertionSortStep(tempData, i);
       tempData = output[0] as Array<number>;
-      var newIterCount = output[1] as number;
-      var newAccessCount = output[2] as number;
-      var newswapCount = output[3] as number;
-      tempIterCount += newIterCount + 1;
-      tempAccessCount += newAccessCount;
-      tempSwapCount += newswapCount;
-      console.log(newIterCount);
+      tempIterCount += output[1] as number;
+      tempAccessCount += output[2] as number;
+      tempSwapCount += output[3] as number;
+
       setSortIndex(i);
       setIterCount(tempIterCount);
       setArrayAccessCount(tempAccessCount);
-      setData(tempData);
       setSwapCount(tempSwapCount);
+      setData(tempData);
       await sleep(100);
+      tempIterCount++;
     }
     setStarted(false);
   };
 
   return (
     <main className="flex h-screen flex-col items-center justify-center p-24 py-32 space-y-4">
-      <Typography>Selection sort</Typography>
+      <Typography>Insertion sort</Typography>
       <div className="flex flex-row justify-center">
         <NumberPicker
           handleChange={(newValue: number) => setArrLength(newValue)}
@@ -61,13 +59,13 @@ export default function Home() {
         />
       </div>
       <div className="flex flex-row space-x-4">
-        <Button color="red" onClick={step} disabled={started}>
+        <Button color="yellow" onClick={step} disabled={started}>
           Start
         </Button>
-        <Button color="red" onClick={setDataArr} disabled={started}>
+        <Button color="yellow" onClick={setDataArr} disabled={started}>
           Reset
         </Button>
-        <Button color="yellow" onClick={() => router.back()}>
+        <Button color="yellow" onClick={() => router.push("/")}>
           Back
         </Button>
       </div>
@@ -81,7 +79,7 @@ export default function Home() {
         data={data}
         style={{
           data: {
-            fill: ({ datum }) => (datum._x == sortIndex ? "red" : "gray"),
+            fill: ({ datum }) => (datum._x == sortIndex ? "#d9db48" : "gray"),
           },
         }}
       ></VictoryBar>

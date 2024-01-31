@@ -29,22 +29,27 @@ export function swap(
   return newArr;
 }
 
-export function selectionSortStep(
-  data: Array<number>,
-  i: number
-): Array<number> {
+export function selectionSortStep(data: Array<number>, i: number): Array<any> {
   var newArr = [...data];
   var minValue;
   minValue = i;
+  var iterCount = 0;
+  var accessCount = 0;
+  var swapCount = 0;
   for (var j = i + 1; j < data.length; j++) {
-    if (newArr[j] < newArr[minValue]) minValue = j;
+    if (newArr[j] < newArr[minValue]) {
+      minValue = j;
+      swapCount++;
+    }
+    iterCount++;
+    accessCount += 2;
   }
-
   newArr = swap(newArr, minValue, i);
-  return newArr;
+  accessCount += 6;
+  return [newArr, iterCount, accessCount, swapCount];
 }
 
-export function bubbleSortStep(data: Array<number>, i: number) {
+export function bubbleSortStep(data: Array<number>, i: number): Array<any> {
   var newArr = [...data];
   var swapped = false;
 
@@ -55,15 +60,119 @@ export function bubbleSortStep(data: Array<number>, i: number) {
   return [newArr, swapped];
 }
 
-// export function bubbleSort(data: Array<number>): Array<number> {
-//   var newArr = [...data];
-//   for (let i = 0; i < newArr.length - 1; i++) {
-//     for (let j = 0; j < newArr.length - i - 1; j++) {
-//       newArr = bubbleSortStep(newArr, j);
-//     }
-//   }
+export function insertionSortStep(data: Array<number>, i: number): Array<any> {
+  var newArr: Array<number> = [...data];
+  var iterCount: number = 0;
+  var accessCount: number = 0;
+  var swapCount: number = 0;
+  while (i > 0 && newArr[i - 1] > newArr[i]) {
+    newArr = swap(newArr, i, i - 1);
+    accessCount += 8;
+    swapCount++;
+    iterCount++;
+    i--;
+  }
+  return [newArr, iterCount, accessCount, swapCount];
+}
 
-//   return newArr;
-// }
+var _iterCount: number = 0;
+var _arrayAccessCount: number = 0;
+var _swapCount: number = 0;
+
+async function merge(
+  left: Array<number>,
+  right: Array<number>,
+  setData: (newValue: Array<number>) => void,
+  setSortIndex: (newValue: number) => void,
+  slow: boolean
+): Promise<Array<number>> {
+  var newArr: Array<number> = [];
+  var leftIndex: number = 0;
+  var rightIndex: number = 0;
+
+  while (leftIndex < left.length && rightIndex < right.length) {
+    if (left[leftIndex] < right[rightIndex]) {
+      newArr.push(left[leftIndex]);
+      _swapCount++;
+      setSortIndex(leftIndex);
+      leftIndex++;
+      _iterCount++;
+      _arrayAccessCount += 3;
+    } else {
+      newArr.push(right[rightIndex]);
+      _swapCount++;
+      setSortIndex(rightIndex);
+      rightIndex++;
+      _iterCount++;
+      _arrayAccessCount += 1;
+    }
+  }
+  setData(newArr.concat(left.slice(leftIndex)).concat(right.slice(rightIndex)));
+  await sleep(slow ? 500 : 100);
+  return newArr.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
+}
+
+export async function mergeSort(
+  data: Array<number>,
+  setData: (newValue: Array<number>) => void,
+  setSortIndex: (newValue: number) => void,
+  setIterCount: (newValue: number) => void,
+  iterCount: number,
+  setArrayAccessCount: (newValue: number) => void,
+  arrayAccessCount: number,
+  setSwapCount: (newValue: number) => void,
+  swapCount: number,
+  slow: boolean
+): Promise<Array<number>> {
+  if (data.length <= 1) {
+    return data;
+  }
+
+  const middle = Math.floor(data.length / 2);
+  const left = data.slice(0, middle);
+  const right = data.slice(middle);
+
+  var res = merge(
+    await mergeSort(
+      left,
+      setData,
+      setSortIndex,
+      setIterCount,
+      iterCount,
+      setArrayAccessCount,
+      arrayAccessCount,
+      setSwapCount,
+      swapCount,
+      slow
+    ),
+    await mergeSort(
+      right,
+      setData,
+      setSortIndex,
+      setIterCount,
+      iterCount,
+      setArrayAccessCount,
+      arrayAccessCount,
+      setSwapCount,
+      swapCount,
+      slow
+    ),
+    setData,
+    setSortIndex,
+    slow
+  );
+
+  setSwapCount(_swapCount);
+  setArrayAccessCount(_arrayAccessCount);
+  setIterCount(_iterCount);
+
+  return res;
+}
+
+export function resetMergeSortStats() {
+  _iterCount = 0;
+  _arrayAccessCount = 0;
+  _swapCount = 0;
+}
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
