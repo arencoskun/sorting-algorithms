@@ -47,7 +47,7 @@ export default function Home() {
         setSwapCount(tempSwapCount);
         await sleep(100);
         tempIterCount++;
-        tempAccessCount += 7;
+        tempAccessCount += 8;
         if (swapped) tempSwapCount++;
       }
       tempIterCount++;

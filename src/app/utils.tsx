@@ -60,16 +60,19 @@ export function bubbleSortStep(data: Array<number>, i: number): Array<any> {
   return [newArr, swapped];
 }
 
-export function insertionSortStep(
-  data: Array<number>,
-  i: number
-): Array<number> {
+export function insertionSortStep(data: Array<number>, i: number): Array<any> {
   var newArr: Array<number> = [...data];
+  var iterCount: number = 0;
+  var accessCount: number = 0;
+  var swapCount: number = 0;
   while (i > 0 && newArr[i - 1] > newArr[i]) {
     newArr = swap(newArr, i, i - 1);
+    accessCount += 8;
+    swapCount++;
+    iterCount++;
     i--;
   }
-  return newArr;
+  return [newArr, iterCount, accessCount, swapCount];
 }
 
 var _iterCount: number = 0;
