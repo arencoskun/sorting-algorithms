@@ -44,7 +44,7 @@ export function selectionSortStep(
   return newArr;
 }
 
-export function bubbleSortStep(data: Array<number>, i: number) {
+export function bubbleSortStep(data: Array<number>, i: number): Array<any> {
   var newArr = [...data];
   var swapped = false;
 
@@ -55,15 +55,16 @@ export function bubbleSortStep(data: Array<number>, i: number) {
   return [newArr, swapped];
 }
 
-// export function bubbleSort(data: Array<number>): Array<number> {
-//   var newArr = [...data];
-//   for (let i = 0; i < newArr.length - 1; i++) {
-//     for (let j = 0; j < newArr.length - i - 1; j++) {
-//       newArr = bubbleSortStep(newArr, j);
-//     }
-//   }
-
-//   return newArr;
-// }
+export function insertionSortStep(
+  data: Array<number>,
+  i: number
+): Array<number> {
+  var newArr: Array<number> = [...data];
+  while (i > 0 && newArr[i - 1] > newArr[i]) {
+    newArr = swap(newArr, i, i - 1);
+    i--;
+  }
+  return newArr;
+}
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));

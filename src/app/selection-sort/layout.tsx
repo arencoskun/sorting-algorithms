@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Sorting algorithms",
-  description: "Visualisation of sorting algorithms",
+  title: "Selection sort",
+  description: "Visualisation of selection sort",
 };
 
 export default function RootLayout({
