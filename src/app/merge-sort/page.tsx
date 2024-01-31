@@ -2,7 +2,7 @@
 import Typography from "@/components/Typography";
 import { useState } from "react";
 import { VictoryBar } from "victory";
-import { fillDataArray, mergeSort, sleep } from "../utils";
+import { fillDataArray, mergeSort, resetMergeSortStats, sleep } from "../utils";
 import Button from "@/components/Button";
 import NumberPicker from "@/components/NumberPicker";
 import { useRouter } from "next/navigation";
@@ -14,22 +14,40 @@ export default function Home() {
   const [arrLength, setArrLength] = useState<number>(0);
   const [started, setStarted] = useState<boolean>(false);
   const [slow, setSlow] = useState<boolean>(true);
+  const [iterCount, setIterCount] = useState<number>(0);
+  const [arrayAccessCount, setArrayAccessCount] = useState<number>(0);
+  const [swapCount, setSwapCount] = useState<number>(0);
   const router = useRouter();
 
   const setDataArr = () => {
     setData(fillDataArray(arrLength ? arrLength : 10));
     setSortIndex(0);
+    setIterCount(0);
+    setArrayAccessCount(0);
+    setSwapCount(0);
+    resetMergeSortStats();
   };
 
   const step = async () => {
     let tempData: number[] = data;
     setStarted(true);
-    await mergeSort(tempData, setData, setSortIndex, slow);
+    await mergeSort(
+      tempData,
+      setData,
+      setSortIndex,
+      setIterCount,
+      iterCount,
+      setArrayAccessCount,
+      arrayAccessCount,
+      setSwapCount,
+      swapCount,
+      slow
+    );
     setStarted(false);
   };
 
   return (
-    <main className="flex h-screen flex-col items-center justify-center p-24 py-24 space-y-4">
+    <main className="flex h-screen flex-col items-center justify-center p-24 py-32 space-y-4">
       <Typography>Merge sort</Typography>
       <div className="flex flex-row justify-center space-x-4">
         <NumberPicker
@@ -55,6 +73,10 @@ export default function Home() {
           Back
         </Button>
       </div>
+      <Typography>
+        {iterCount} iterations, {arrayAccessCount} array accesses, {swapCount}{" "}
+        swaps
+      </Typography>
       <VictoryBar
         name="bar"
         height={250}

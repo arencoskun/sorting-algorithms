@@ -72,6 +72,10 @@ export function insertionSortStep(
   return newArr;
 }
 
+var _iterCount: number = 0;
+var _arrayAccessCount: number = 0;
+var _swapCount: number = 0;
+
 async function merge(
   left: Array<number>,
   right: Array<number>,
@@ -86,12 +90,18 @@ async function merge(
   while (leftIndex < left.length && rightIndex < right.length) {
     if (left[leftIndex] < right[rightIndex]) {
       newArr.push(left[leftIndex]);
+      _swapCount++;
       setSortIndex(leftIndex);
       leftIndex++;
+      _iterCount++;
+      _arrayAccessCount += 3;
     } else {
       newArr.push(right[rightIndex]);
+      _swapCount++;
       setSortIndex(rightIndex);
       rightIndex++;
+      _iterCount++;
+      _arrayAccessCount += 1;
     }
   }
   setData(newArr.concat(left.slice(leftIndex)).concat(right.slice(rightIndex)));
@@ -103,6 +113,12 @@ export async function mergeSort(
   data: Array<number>,
   setData: (newValue: Array<number>) => void,
   setSortIndex: (newValue: number) => void,
+  setIterCount: (newValue: number) => void,
+  iterCount: number,
+  setArrayAccessCount: (newValue: number) => void,
+  arrayAccessCount: number,
+  setSwapCount: (newValue: number) => void,
+  swapCount: number,
   slow: boolean
 ): Promise<Array<number>> {
   if (data.length <= 1) {
@@ -113,13 +129,47 @@ export async function mergeSort(
   const left = data.slice(0, middle);
   const right = data.slice(middle);
 
-  return merge(
-    await mergeSort(left, setData, setSortIndex, slow),
-    await mergeSort(right, setData, setSortIndex, slow),
+  var res = merge(
+    await mergeSort(
+      left,
+      setData,
+      setSortIndex,
+      setIterCount,
+      iterCount,
+      setArrayAccessCount,
+      arrayAccessCount,
+      setSwapCount,
+      swapCount,
+      slow
+    ),
+    await mergeSort(
+      right,
+      setData,
+      setSortIndex,
+      setIterCount,
+      iterCount,
+      setArrayAccessCount,
+      arrayAccessCount,
+      setSwapCount,
+      swapCount,
+      slow
+    ),
     setData,
     setSortIndex,
     slow
   );
+
+  setSwapCount(_swapCount);
+  setArrayAccessCount(_arrayAccessCount);
+  setIterCount(_iterCount);
+
+  return res;
+}
+
+export function resetMergeSortStats() {
+  _iterCount = 0;
+  _arrayAccessCount = 0;
+  _swapCount = 0;
 }
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));

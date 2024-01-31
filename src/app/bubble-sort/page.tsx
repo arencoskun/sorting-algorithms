@@ -35,7 +35,7 @@ export default function Home() {
         setSearchIndex(j);
         setSortIndex(i);
         setData(tempData);
-        await sleep(0);
+        await sleep(100);
       }
       if (swapped === false && sortIndex > 1) break;
     }
