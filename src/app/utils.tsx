@@ -116,13 +116,13 @@ export async function mergeSort(
   data: Array<number>,
   setData: (newValue: Array<number>) => void,
   setSortIndex: (newValue: number) => void,
-  setIterCount: (newValue: number) => void,
-  iterCount: number,
-  setArrayAccessCount: (newValue: number) => void,
-  arrayAccessCount: number,
-  setSwapCount: (newValue: number) => void,
-  swapCount: number,
-  slow: boolean
+  setIterCount?: (newValue: number) => void,
+  iterCount?: number,
+  setArrayAccessCount?: (newValue: number) => void,
+  arrayAccessCount?: number,
+  setSwapCount?: (newValue: number) => void,
+  swapCount?: number,
+  slow: boolean = false
 ): Promise<Array<number>> {
   if (data.length <= 1) {
     return data;
@@ -162,9 +162,9 @@ export async function mergeSort(
     slow
   );
 
-  setSwapCount(_swapCount);
-  setArrayAccessCount(_arrayAccessCount);
-  setIterCount(_iterCount);
+  if (setSwapCount) setSwapCount(_swapCount);
+  if (setArrayAccessCount) setArrayAccessCount(_arrayAccessCount);
+  if (setIterCount) setIterCount(_iterCount);
 
   return res;
 }
