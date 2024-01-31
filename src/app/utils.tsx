@@ -67,4 +67,54 @@ export function insertionSortStep(
   return newArr;
 }
 
+async function merge(
+  left: Array<number>,
+  right: Array<number>,
+  setData: (newValue: Array<number>) => void,
+  setSortIndex: (newValue: number) => void,
+  slow: boolean
+): Promise<Array<number>> {
+  var newArr: Array<number> = [];
+  var leftIndex: number = 0;
+  var rightIndex: number = 0;
+
+  while (leftIndex < left.length && rightIndex < right.length) {
+    if (left[leftIndex] < right[rightIndex]) {
+      newArr.push(left[leftIndex]);
+      setSortIndex(leftIndex);
+      leftIndex++;
+    } else {
+      newArr.push(right[rightIndex]);
+      setSortIndex(rightIndex);
+      rightIndex++;
+    }
+  }
+  setData(newArr.concat(left.slice(leftIndex)).concat(right.slice(rightIndex)));
+  await sleep(slow ? 500 : 100);
+  return newArr.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
+}
+
+export async function mergeSort(
+  data: Array<number>,
+  setData: (newValue: Array<number>) => void,
+  setSortIndex: (newValue: number) => void,
+  slow: boolean
+): Promise<Array<number>> {
+  if (data.length <= 1) {
+    return data;
+  }
+
+  const middle = Math.floor(data.length / 2);
+  const left = data.slice(0, middle);
+  const right = data.slice(middle);
+
+  return merge(
+    await mergeSort(left, setData, setSortIndex, slow),
+    await mergeSort(right, setData, setSortIndex, slow),
+    setData,
+    setSortIndex,
+    slow
+  );
+}
+
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
