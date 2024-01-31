@@ -18,6 +18,9 @@ export default function Home() {
       <Button color="yellow" onClick={() => router.push("insertion-sort/")}>
         Insertion sort
       </Button>
+      <Button color="blue" onClick={() => router.push("merge-sort/")}>
+        Merge sort
+      </Button>
     </main>
   );
 }
