@@ -21,6 +21,9 @@ export default function Home() {
       <Button color="blue" onClick={() => router.push("merge-sort/")}>
         Merge sort
       </Button>
+      <Button color="slate" onClick={() => router.push("compare/")}>
+        Compare
+      </Button>
     </main>
   );
 }
