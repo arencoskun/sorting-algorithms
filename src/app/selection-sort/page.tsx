@@ -1,6 +1,6 @@
 "use client";
 import Typography from "@/components/Typography";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { VictoryBar } from "victory";
 import { fillDataArray, selectionSortStep, sleep } from "../utils";
 import Button from "@/components/Button";
@@ -16,6 +16,10 @@ export default function Home() {
   const [arrayAccessCount, setArrayAccessCount] = useState<number>(0);
   const [swapCount, setSwapCount] = useState<number>(0);
   const router = useRouter();
+
+  useEffect(() => {
+    setDataArr();
+  }, [arrLength]);
 
   const setDataArr = () => {
     setData(fillDataArray(arrLength ? arrLength : 10));

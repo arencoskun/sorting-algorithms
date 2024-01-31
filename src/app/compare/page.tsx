@@ -2,7 +2,7 @@
 
 import Button from "@/components/Button";
 import Typography from "@/components/Typography";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { VictoryBar } from "victory";
 import {
   bubbleSortStep,
@@ -40,6 +40,10 @@ export default function Home() {
     useState<boolean>(false);
 
   const router = useRouter();
+
+  useEffect(() => {
+    setDataArr();
+  }, [arrLength]);
 
   function setAllData(data: Array<number>) {
     setSelectionSortData(data);
@@ -176,7 +180,11 @@ export default function Home() {
       <div className="mb-28 w-full">
         <NumberPicker
           className="text-center"
-          handleChange={(newNumber) => setArrLength(newNumber)}
+          handleChange={(newNumber, lowerThanMinimum) => {
+            if (!lowerThanMinimum && !Number.isNaN(newNumber)) {
+              setArrLength(newNumber);
+            }
+          }}
           defaultValue={arrLength.toString()}
           minValue={10}
           maxValue={10000}
