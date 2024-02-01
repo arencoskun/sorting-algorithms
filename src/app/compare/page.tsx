@@ -9,6 +9,7 @@ import {
   fillDataArray,
   insertionSortStep,
   mergeSort,
+  resetMergeSortStats,
   selectionSortStep,
   sleep,
 } from "../utils";
@@ -215,7 +216,13 @@ export default function Home() {
         >
           Reset
         </Button>
-        <Button color="yellow" onClick={() => router.push("/")}>
+        <Button
+          color="yellow"
+          onClick={() => {
+            router.push("/");
+            resetMergeSortStats();
+          }}
+        >
           Back
         </Button>
       </div>
